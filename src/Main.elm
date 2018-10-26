@@ -1,20 +1,29 @@
-module Main exposing (..)
+module Main exposing (Model, Msg(..), init, main, update, view)
 
+import Auth
 import Browser
-import Html exposing (Html, text, div, h1, img)
-import Html.Attributes exposing (src)
+import Html exposing (..)
+import Html.Attributes exposing (..)
+
 
 
 ---- MODEL ----
 
 
 type alias Model =
-    {}
+    { authModel : Auth.Model }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( {}, Cmd.none )
+    ( { authModel = Auth.initModel }, Cmd.none )
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.batch
+        [ Sub.map AuthMsg (Auth.subscriptions model.authModel)
+        ]
 
 
 
@@ -22,12 +31,20 @@ init =
 
 
 type Msg
-    = NoOp
+    = AuthMsg Auth.Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    ( model, Cmd.none )
+    case msg of
+        AuthMsg authMsg ->
+            let
+                ( subModel, subCmd ) =
+                    Auth.update authMsg model.authModel
+            in
+            ( { model | authModel = subModel }
+            , Cmd.map AuthMsg subCmd
+            )
 
 
 
@@ -37,8 +54,18 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ img [ src "/logo.svg" ] []
-        , h1 [] [ text "Your Elm App is working!" ]
+        [ nav [ class "navbar navbar-light bg-light" ]
+            [ a [ class "navbar-brand" ] [ text "Hill Cycling" ]
+            , div [] [ Auth.view model.authModel |> Html.map AuthMsg ]
+            ]
+        , div
+            [ class "jumboton" ]
+            [ img [ src "/logo.svg" ] []
+            , h1 [] [ text "Your Elm App is working!" ]
+            ]
+        , div
+            [ class "container" ]
+            []
         ]
 
 
@@ -52,5 +79,5 @@ main =
         { view = view
         , init = \_ -> init
         , update = update
-        , subscriptions = always Sub.none
+        , subscriptions = subscriptions
         }

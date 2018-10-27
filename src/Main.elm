@@ -53,14 +53,20 @@ view : Model -> Html Msg
 view model =
     div []
         [ nav [ class "navbar navbar-light bg-light" ]
-            [ a [ class "navbar-brand" ] [ text "Hill Cycling" ]
-            , div [] [ AuthView.view model.authModel ]
+            [ a
+                [ class "navbar-brand"
+                ]
+                [ text "Hill Cycling" ]
+            , div
+                []
+                [ AuthView.view model.authModel ]
             ]
         , div
-            [ class "jumboton" ]
-            [ img [ src "/logo.svg" ] []
-            , h1 [] [ text "Your Elm App is working!" ]
+            [ attribute "id" "map"
+            , class "container-fluid"
+            , attribute "style" "height: 600px"
             ]
+            []
         , div
             [ class "container" ]
             []

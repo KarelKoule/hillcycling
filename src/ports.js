@@ -19,6 +19,10 @@ exports.subscribe = function(app, firebase) {
     });
   };
 
+  let signUp = function(newUser) {
+
+  };
+
   let signOut = function() {
     firebase.auth().signOut();
   };
@@ -31,6 +35,6 @@ exports.subscribe = function(app, firebase) {
   firebase.auth().onAuthStateChanged(onAuthStateChanged);
   app.ports.signIn.subscribe(signIn);
   app.ports.signOut.subscribe(signOut);
-
+  app.ports.signUp.subscribe(signUp);
 
 };

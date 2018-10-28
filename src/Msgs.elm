@@ -9,5 +9,11 @@ type AuthMsg
     | AuthStateChanged (Maybe Types.User)
 
 
+type SignUpMsg
+    = SetFormField Types.SignUpField
+    | SignUpNewUser Types.NewUser
+
+
 type Msg
-    = AuthStep AuthMsg
+    = ProcessAuthMsg AuthMsg
+    | ProcessSignUp SignUpMsg

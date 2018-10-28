@@ -1,8 +1,19 @@
-module Types exposing (User)
+module Types exposing (NewUser, SignUpField(..), User, UserId, UserInfo)
 
 
 type alias UserId =
     String
+
+
+type SignUpField
+    = Email
+    | Password
+
+
+type alias NewUser =
+    { email : String
+    , password : String
+    }
 
 
 type alias UserInfo =

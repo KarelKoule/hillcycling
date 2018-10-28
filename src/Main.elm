@@ -6,6 +6,8 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Msgs exposing (..)
 import Views.AuthView as AuthView
+import Views.Modals as Modals
+import Views.Navbar as Navbar
 
 
 
@@ -24,7 +26,7 @@ init =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
-        [ Sub.map AuthStep (Auth.subscriptions model.authModel)
+        [ Sub.map ProcessAuthMsg (Auth.subscriptions model.authModel)
         ]
 
 
@@ -35,13 +37,13 @@ subscriptions model =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        AuthStep authMsg ->
+        ProcessAuthMsg authMsg ->
             let
                 ( subModel, subCmd ) =
                     Auth.update authMsg model.authModel
             in
             ( { model | authModel = subModel }
-            , Cmd.map AuthStep subCmd
+            , Cmd.map ProcessAuthMsg subCmd
             )
 
 
@@ -52,24 +54,17 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ nav [ class "navbar navbar-light bg-light" ]
-            [ a
-                [ class "navbar-brand"
-                ]
-                [ text "Hill Cycling" ]
-            , div
-                []
-                [ AuthView.view model.authModel ]
-            ]
+        [ Navbar.view model.authModel
         , div
             [ attribute "id" "map"
             , class "container-fluid"
-            , attribute "style" "height: 600px"
+            , attribute "style" "height: 85vh"
             ]
             []
         , div
             [ class "container" ]
             []
+        , Modals.signUpDialog
         ]
 
 

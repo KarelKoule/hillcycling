@@ -61,7 +61,7 @@ profileAvatar user =
 
 signUpButton : Html Msg
 signUpButton =
-    button [ class "btn btn-primary", type_ "button", onClick (AuthStep SignOut) ]
+    button [ class "btn btn-primary", type_ "button", onClick (ProcessAuthMsg SignOut) ]
         [ text "Sign Up"
         ]
 
@@ -84,7 +84,7 @@ profile user =
             [ text (Maybe.withDefault "unknown" user.displayName)
             , i
                 [ class "fas fa-sign-out-alt ml-sm-2"
-                , onClick (AuthStep SignOut)
+                , onClick (ProcessAuthMsg SignOut)
                 ]
                 []
             ]
@@ -95,7 +95,7 @@ signInForm : Html Msg
 signInForm =
     div []
         [ a
-            [ onClick (AuthStep SignIn)
+            [ onClick (ProcessAuthMsg SignIn)
             , class "btn btn-social btn-google"
             , style "color" "white"
             ]
